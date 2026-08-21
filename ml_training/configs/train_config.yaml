@@ -1,0 +1,78 @@
+# Training Configuration — Optimized for RTX 5050 (8GB VRAM)
+# This config is for Phase 5 (if retraining is necessary based on Phase 3-4 evidence)
+
+model:
+  backbone: "google/vit-base-patch16-224"
+  num_classes: 2
+  freeze_layers: 8          # Freeze first 8 of 12 transformer layers initially
+  unfreeze_after_epochs: 5  # Unfreeze all layers after 5 epochs
+
+training:
+  # Batch & Performance (RTX 5050 optimized)
+  batch_size: 32             # Fits in 8GB VRAM with bf16
+  gradient_accumulation: 2   # Effective batch size = 64
+  mixed_precision: "bf16"    # RTX 5050 = Ada Lovelace = native bf16 support
+  num_workers: 4             # Parallel data loading
+  pin_memory: true
+  
+  # Optimization
+  epochs: 20
+  learning_rate: 2.0e-5      # Phase 1 (frozen layers) LR
+  unfrozen_learning_rate: 5.0e-6  # Phase 2 (all layers unfrozen) LR
+  weight_decay: 0.01
+  scheduler: "cosine"
+  warmup_steps: 500
+  
+  # Early stopping
+  early_stopping_patience: 5
+  metric_for_best_model: "f1_score"  # Save best by F1, not accuracy
+  
+  # Checkpointing
+  save_total_limit: 3
+
+data:
+  image_size: 224
+  face_crop_padding: 1.3     # 30% bounding box expansion (matches inference)
+  
+  # Paths (relative to project root)
+  train_dir: "data/processed/train"
+  val_dir: "data/processed/val"
+  test_dir: "data/processed/test"
+  calibration_dir: "data/processed/calibration"
+  holdout_dir: "data/holdout"
+
+augmentation:
+  # JPEG recompression (WhatsApp/Instagram simulation)
+  jpeg_quality_min: 30
+  jpeg_quality_max: 85
+  jpeg_prob: 0.7
+  
+  # Downscale/upscale (social media resize)
+  downscale_min: 0.4
+  downscale_max: 0.8
+  downscale_prob: 0.5
+  
+  # Noise (smartphone sensor)
+  iso_noise_prob: 0.3
+  gauss_noise_prob: 0.2
+  
+  # Blur (motion, defocus)
+  motion_blur_prob: 0.15
+  gaussian_blur_prob: 0.15
+  
+  # Lighting
+  brightness_contrast_prob: 0.5
+  color_jitter_prob: 0.4
+  
+  # Geometric
+  horizontal_flip_prob: 0.5
+  shift_scale_rotate_prob: 0.4
+  
+  # Cutout
+  coarse_dropout_prob: 0.2
+
+experiment:
+  project_name: "deepfake-detection"
+  run_name: null  # Auto-generated if null
+  tracker: "wandb"  # or "tensorboard"
+  log_every_n_steps: 50

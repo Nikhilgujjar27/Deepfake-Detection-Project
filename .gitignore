@@ -1,0 +1,72 @@
+# Deepfake-Project Dependencies
+# Model weights (.pth, .onnx, .pt)
+*.pth
+*.onnx
+*.pt
+models/baseline/
+models/*.onnx
+
+# Datasets (too large for git)
+data/raw/
+data/processed/
+data/holdout/
+data/cifake/
+data/real_vs_fake/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+.python-version
+
+# Environment & Secrets
+.env
+*.key
+*.pem
+*.secret
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.continue/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Frontend
+node_modules/
+dist/
+.cache/
+*.tsbuildinfo
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs & Experiment Tracking
+*.log
+wandb/
+mlruns/
+lightning_logs/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Docker
+*.tar
+
+# Temporary
+tmp/
+temp/
+scratch/
