@@ -62,76 +62,76 @@ export const Education: React.FC = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 pb-24">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10 pb-24">
       {/* Title */}
-      <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-950/60 border border-indigo-500/30 text-indigo-300 text-xs font-mono">
-          <BookOpen className="w-3.5 h-3.5 text-indigo-400" /> Deepfake Threat Intelligence & Forensics
+      <div className="text-center space-y-2">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-medium">
+          <BookOpen className="w-3.5 h-3.5" /> Threat Intelligence & Visual Forensics
         </div>
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-          Deepfake Forensic Academy
+        <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+          Visual Forensics Academy
         </h1>
-        <p className="text-sm text-slate-400 max-w-2xl mx-auto leading-relaxed">
-          Master the science of identifying synthetic media, GAN boundary artifacts, diffusion glitches, and transformer self-attention cues.
+        <p className="text-sm text-slate-500 max-w-xl mx-auto">
+          Learn the principles of identifying synthetic media, GAN boundary artifacts, diffusion glitches, and transformer self-attention cues.
         </p>
       </div>
 
-      {/* 5 Forensic Indicators Breakdown */}
-      <div className="space-y-6">
-        <h2 className="text-xl font-bold text-white flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-indigo-400" /> The 5 Anatomical Failure Modes of AI Faces
+      {/* 4 Forensic Indicators Breakdown */}
+      <div className="space-y-4">
+        <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-blue-600" /> Anatomical Failure Modes of Synthetic Faces
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="glass-card p-5 rounded-2xl border border-slate-800 space-y-2">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-600/20 text-indigo-400 text-xs font-mono flex items-center justify-center">1</span>
+          <div className="saas-card p-5 border border-slate-200 bg-white rounded-xl space-y-1.5 shadow-xs">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-md bg-blue-50 text-blue-600 text-xs font-semibold flex items-center justify-center">1</span>
               Corneal Specular Reflection Asymmetry
             </h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Real cameras capture identical light reflections in both eyes from the physical scene light. AI models frequently generate mismatched reflection shapes or completely missing reflections in one eye.
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Real camera sensors capture identical light reflections in both eyes from the physical scene light. AI models frequently synthesize mismatched reflection geometries or missing corneal highlights.
             </p>
           </div>
 
-          <div className="glass-card p-5 rounded-2xl border border-slate-800 space-y-2">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-600/20 text-indigo-400 text-xs font-mono flex items-center justify-center">2</span>
-              Ear Lobe & Earring Inconsistencies
+          <div className="saas-card p-5 border border-slate-200 bg-white rounded-xl space-y-1.5 shadow-xs">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-md bg-blue-50 text-blue-600 text-xs font-semibold flex items-center justify-center">2</span>
+              Ear Lobe & Jewelry Inconsistencies
             </h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Generators struggle with the intricate 3D topology of ear cartilage and jewelry, resulting in melted earring attachments or mismatched left/right ear lobe shapes.
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Generators struggle with the intricate 3D topology of ear cartilage and jewelry, often resulting in melted earring attachments or mismatched left/right ear lobes.
             </p>
           </div>
 
-          <div className="glass-card p-5 rounded-2xl border border-slate-800 space-y-2">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-600/20 text-indigo-400 text-xs font-mono flex items-center justify-center">3</span>
-              Teeth & Gum Boundary Smearing
+          <div className="saas-card p-5 border border-slate-200 bg-white rounded-xl space-y-1.5 shadow-xs">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-md bg-blue-50 text-blue-600 text-xs font-semibold flex items-center justify-center">3</span>
+              Teeth & Interdental Separation Smearing
             </h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              AI-generated smiles often show continuous monolithic white tooth ribbons without distinct interdental separation, or misaligned incisors with blurry gum margins.
+            <p className="text-xs text-slate-600 leading-relaxed">
+              AI-generated smiles often display continuous white tooth ribbons without distinct interdental separation, or misaligned incisors with blurry gum margins.
             </p>
           </div>
 
-          <div className="glass-card p-5 rounded-2xl border border-slate-800 space-y-2">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-indigo-600/20 text-indigo-400 text-xs font-mono flex items-center justify-center">4</span>
-              FaceSwap Boundary Blending Seams
+          <div className="saas-card p-5 border border-slate-200 bg-white rounded-xl space-y-1.5 shadow-xs">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-md bg-blue-50 text-blue-600 text-xs font-semibold flex items-center justify-center">4</span>
+              Face-Swap Boundary Blending Seams
             </h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Face-swap deepfakes splice a source face onto a target video frame. The Poisson blending perimeter around the jawline and forehead often exhibits subtle resolution or skin-tone step discontinuities.
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Face-swap deepfakes splice a source face onto a target image. The Poisson blending perimeter around the jawline and hairline often reveals resolution or skin-tone step discontinuities.
             </p>
           </div>
         </div>
       </div>
 
       {/* Interactive Forensic Spotter Quiz */}
-      <div className="glass-panel p-8 rounded-3xl border border-slate-800 space-y-8">
+      <div className="saas-card p-6 sm:p-8 border border-slate-200 bg-white rounded-xl space-y-6 shadow-xs">
         <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <HelpCircle className="w-5 h-5 text-cyan-400" /> Interactive Forensic Spotter Quiz
+          <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <HelpCircle className="w-5 h-5 text-blue-600" /> Interactive Forensic Spotter Quiz
           </h2>
-          <p className="text-xs text-slate-400 mt-1">Test your visual forensic literacy against synthetic media manipulation.</p>
+          <p className="text-xs text-slate-500 mt-1">Test your knowledge on synthetic media manipulation and transformer attention.</p>
         </div>
 
         <div className="space-y-6">
@@ -141,30 +141,29 @@ export const Education: React.FC = () => {
             const isCorrect = selectedOpt === quiz.correctIndex;
 
             return (
-              <div key={quiz.id} className="glass-card p-5 rounded-2xl border border-slate-800 space-y-4">
-                <div className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-full bg-slate-900 border border-slate-700 text-slate-300 text-xs font-mono flex items-center justify-center flex-shrink-0">
+              <div key={quiz.id} className="p-5 rounded-xl border border-slate-200 bg-slate-50/50 space-y-3.5">
+                <div className="flex items-start gap-2.5">
+                  <span className="w-5 h-5 rounded-full bg-slate-200 text-slate-700 text-xs font-semibold flex items-center justify-center flex-shrink-0 mt-0.5">
                     {qIdx + 1}
                   </span>
-                  <h4 className="text-sm font-semibold text-white leading-relaxed">{quiz.question}</h4>
+                  <h4 className="text-sm font-semibold text-slate-900 leading-relaxed">{quiz.question}</h4>
                 </div>
 
-                {/* Clue */}
-                <div className="text-[11px] text-slate-500 font-mono italic pl-9">
-                  Clue: {quiz.clue}
+                <div className="text-[11px] text-slate-500 italic pl-7">
+                  Hint: {quiz.clue}
                 </div>
 
                 {/* Options */}
-                <div className="space-y-2 pl-9">
+                <div className="space-y-2 pl-7">
                   {quiz.options.map((opt, oIdx) => {
-                    let btnStyle = "bg-slate-900/80 border-slate-800 text-slate-300 hover:border-indigo-500/40 hover:bg-slate-850";
+                    let btnStyle = "bg-white border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50";
                     if (hasAnswered) {
                       if (oIdx === quiz.correctIndex) {
-                        btnStyle = "bg-emerald-950/70 border-emerald-600 text-emerald-200";
+                        btnStyle = "bg-emerald-50 border-emerald-300 text-emerald-900 font-medium";
                       } else if (oIdx === selectedOpt && !isCorrect) {
-                        btnStyle = "bg-rose-950/70 border-rose-600 text-rose-200";
+                        btnStyle = "bg-rose-50 border-rose-300 text-rose-900";
                       } else {
-                        btnStyle = "bg-slate-900/40 border-slate-850 text-slate-500 opacity-60";
+                        btnStyle = "bg-white border-slate-100 text-slate-400 opacity-60";
                       }
                     }
 
@@ -173,14 +172,14 @@ export const Education: React.FC = () => {
                         key={oIdx}
                         disabled={hasAnswered}
                         onClick={() => handleSelectOption(quiz.id, oIdx)}
-                        className={`w-full text-left p-3 rounded-xl border text-xs font-medium transition-all flex items-center justify-between cursor-pointer ${btnStyle}`}
+                        className={`w-full text-left p-3 rounded-lg border text-xs font-medium transition-colors flex items-center justify-between cursor-pointer ${btnStyle}`}
                       >
                         <span>{opt}</span>
                         {hasAnswered && oIdx === quiz.correctIndex && (
-                          <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0 ml-2" />
+                          <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0 ml-2" />
                         )}
                         {hasAnswered && oIdx === selectedOpt && !isCorrect && (
-                          <XCircle className="w-4 h-4 text-rose-400 flex-shrink-0 ml-2" />
+                          <XCircle className="w-4 h-4 text-rose-600 flex-shrink-0 ml-2" />
                         )}
                       </button>
                     );
@@ -190,14 +189,14 @@ export const Education: React.FC = () => {
                 {/* Explanation */}
                 {hasAnswered && (
                   <div
-                    className={`ml-9 p-3.5 rounded-xl border text-xs leading-relaxed ${
+                    className={`ml-7 p-3 rounded-lg border text-xs leading-relaxed ${
                       isCorrect
-                        ? 'bg-emerald-950/30 border-emerald-800/40 text-emerald-300'
-                        : 'bg-rose-950/30 border-rose-800/40 text-rose-300'
+                        ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
+                        : 'bg-rose-50 border-rose-200 text-rose-900'
                     }`}
                   >
-                    <strong className="block mb-1 font-bold">
-                      {isCorrect ? '✓ Correct Forensics Analysis!' : '✗ Incorrect Diagnosis'}
+                    <strong className="block mb-0.5 font-semibold">
+                      {isCorrect ? '✓ Correct Forensics Analysis' : '✗ Incorrect Diagnosis'}
                     </strong>
                     {quiz.explanation}
                   </div>

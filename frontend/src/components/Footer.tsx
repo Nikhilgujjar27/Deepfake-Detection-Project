@@ -1,68 +1,98 @@
 import React from 'react';
-import { Shield, Github, Cpu, FileCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Shield, Github, Layers } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="border-t border-slate-800/80 bg-slate-950/80 mt-auto">
+    <footer className="bg-white border-t border-slate-200 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          {/* Col 1: Brand & Synopsis */}
-          <div className="md:col-span-2 space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Brand Col */}
+          <div className="space-y-3 md:col-span-2">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center">
-                <Shield className="w-4 h-4 text-indigo-400" />
+              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-xs">
+                <Shield className="w-4 h-4" />
               </div>
-              <span className="text-lg font-bold tracking-tight text-white">DeepSentry</span>
+              <span className="text-base font-semibold text-slate-900">
+                DeepSentry
+              </span>
             </div>
-            <p className="text-sm text-slate-400 max-w-md leading-relaxed">
-              Scientific Deepfake Detection & Facial Media Forensics System powered by a Calibrated Vision Transformer (ViT-Base-16) and Secondary Boundary Texture Ensemble. Validated on synthetic benchmarks and real-world smartphone imagery.
+            <p className="text-sm text-slate-500 max-w-sm leading-relaxed">
+              Evidence-based deepfake detection powered by a calibrated Vision Transformer and secondary forensic neural networks. Designed for high real-world reliability on smartphone imagery.
             </p>
-            <div className="flex items-center gap-4 text-xs text-slate-500 font-mono">
-              <span className="flex items-center gap-1.5">
-                <Cpu className="w-3.5 h-3.5 text-indigo-400" /> ViT-B/16 + CNN Ensemble
-              </span>
-              <span>•</span>
-              <span className="flex items-center gap-1.5">
-                <FileCheck className="w-3.5 h-3.5 text-emerald-400" /> 99.0% Benchmark Acc
-              </span>
-            </div>
           </div>
 
-          {/* Col 2: Navigation */}
+          {/* Quick Links */}
           <div>
-            <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3 font-mono">System</h4>
-            <ul className="space-y-2 text-sm text-slate-400">
-              <li><Link to="/scan" className="hover:text-indigo-400 transition-colors">Forensic Scanner</Link></li>
-              <li><Link to="/education" className="hover:text-indigo-400 transition-colors">Deepfake Academy</Link></li>
-              <li><Link to="/architecture" className="hover:text-indigo-400 transition-colors">Architecture & Metrics</Link></li>
-              <li><Link to="/history" className="hover:text-indigo-400 transition-colors">Audit History</Link></li>
+            <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-3">
+              Forensic Tools
+            </h4>
+            <ul className="space-y-2 text-sm text-slate-600">
+              <li>
+                <Link to="/scan" className="hover:text-blue-600 transition-colors">
+                  Forensic Studio
+                </Link>
+              </li>
+              <li>
+                <Link to="/education" className="hover:text-blue-600 transition-colors">
+                  Forensics Academy
+                </Link>
+              </li>
+              <li>
+                <Link to="/architecture" className="hover:text-blue-600 transition-colors">
+                  System Architecture
+                </Link>
+              </li>
+              <li>
+                <Link to="/history" className="hover:text-blue-600 transition-colors">
+                  Audit Records
+                </Link>
+              </li>
             </ul>
           </div>
 
-          {/* Col 3: Academic & Research */}
+          {/* Documentation & Source */}
           <div>
-            <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3 font-mono">Academic & Code</h4>
-            <ul className="space-y-2 text-sm text-slate-400">
+            <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-3">
+              Resources
+            </h4>
+            <ul className="space-y-2 text-sm text-slate-600">
+              <li>
+                <Link to="/about" className="hover:text-blue-600 transition-colors">
+                  Project Documentation
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="http://localhost:8000/docs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-blue-600 transition-colors inline-flex items-center gap-1"
+                >
+                  <Layers className="w-3.5 h-3.5" /> API Reference
+                </a>
+              </li>
               <li>
                 <a
                   href="https://github.com/Nikhilgujjar27/Deepfake-Detection-Project"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 hover:text-indigo-400 transition-colors"
+                  className="hover:text-blue-600 transition-colors inline-flex items-center gap-1"
                 >
-                  <Github className="w-4 h-4" /> GitHub Repository
+                  <Github className="w-3.5 h-3.5" /> GitHub Repository
                 </a>
               </li>
-              <li><Link to="/about" className="hover:text-indigo-400 transition-colors">VTU Major Project</Link></li>
-              <li><Link to="/about" className="hover:text-indigo-400 transition-colors">Research Methodology</Link></li>
             </ul>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 font-mono">
-          <p>© 2026 DeepSentry AI Forensics. Engineered for VTU Computer Science & Engineering.</p>
-          <p className="mt-2 sm:mt-0">Calibrated Dual-Model Inference Pipeline • Zero Heuristics</p>
+        <div className="pt-8 mt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+          <p>© {new Date().getFullYear()} DeepSentry AI Forensics. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <span>60/40 Calibrated Ensemble Engine</span>
+            <span>•</span>
+            <span>Vision Transformer ViT-Base</span>
+          </div>
         </div>
       </div>
     </footer>

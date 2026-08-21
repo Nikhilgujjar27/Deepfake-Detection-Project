@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Eye, Flame, Layers, Sparkles } from 'lucide-react';
+import { Eye, Flame, Layers, Info } from 'lucide-react';
 import type { FaceResult } from '../types';
 
 interface Props {
@@ -13,42 +13,42 @@ export const AttentionHeatmapViewer: React.FC<Props> = ({ face }) => {
   const hasHeatmap = Boolean(face.attention_map);
 
   return (
-    <div className="glass-card rounded-xl p-5 border border-slate-800">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400">
+    <div className="saas-card-flat p-5 border border-slate-200 bg-white rounded-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <div className="flex items-center gap-2.5">
+          <div className="p-1.5 rounded-md bg-blue-50 text-blue-600 border border-blue-100">
             <Flame className="w-4 h-4" />
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-white">ViT Attention Explainability Heatmap</h4>
-            <p className="text-xs text-slate-400">Visualizing 12-layer multi-head self-attention on facial patches</p>
+            <h4 className="text-sm font-semibold text-slate-900">ViT Self-Attention Heatmap</h4>
+            <p className="text-xs text-slate-500">12-layer multi-head transformer token saliency across facial patches</p>
           </div>
         </div>
 
         {/* View Mode Controls */}
-        <div className="flex items-center gap-1 bg-slate-900/80 p-1 rounded-lg border border-slate-800 text-xs">
+        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 text-xs">
           <button
             onClick={() => setViewMode('heatmap')}
-            className={`px-2.5 py-1 rounded font-medium transition-all ${
+            className={`px-2.5 py-1 rounded-md font-medium transition-colors ${
               viewMode === 'heatmap'
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-white text-blue-600 shadow-xs'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <span className="flex items-center gap-1">
-              <Eye className="w-3 h-3" /> Heatmap Overlay
+            <span className="flex items-center gap-1.5">
+              <Eye className="w-3.5 h-3.5" /> Overlay
             </span>
           </button>
           <button
             onClick={() => setViewMode('split')}
-            className={`px-2.5 py-1 rounded font-medium transition-all ${
+            className={`px-2.5 py-1 rounded-md font-medium transition-colors ${
               viewMode === 'split'
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-white text-blue-600 shadow-xs'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <span className="flex items-center gap-1">
-              <Layers className="w-3 h-3" /> Side-by-Side
+            <span className="flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5" /> Side-by-Side
             </span>
           </button>
         </div>
@@ -57,35 +57,35 @@ export const AttentionHeatmapViewer: React.FC<Props> = ({ face }) => {
       {hasHeatmap ? (
         <div className="space-y-4">
           {viewMode === 'heatmap' ? (
-            <div className="relative rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80 flex items-center justify-center min-h-[260px]">
+            <div className="relative rounded-lg overflow-hidden bg-slate-900 border border-slate-200 flex items-center justify-center min-h-[260px]">
               <img
                 src={`data:image/png;base64,${face.attention_map}`}
                 alt="ViT Attention Map Overlay"
-                className="max-h-[320px] w-auto object-contain rounded-lg shadow-inner transition-opacity duration-300"
+                className="max-h-[300px] w-auto object-contain rounded transition-opacity duration-200"
                 style={{ opacity }}
               />
-              <div className="absolute bottom-3 left-3 bg-slate-900/90 backdrop-blur-md px-2.5 py-1 rounded text-[11px] font-mono text-slate-300 border border-slate-700/60">
-                Patch Grid: 14×14 (196 Tokens) • Jet Colormap
+              <div className="absolute bottom-2.5 left-2.5 bg-slate-950/80 backdrop-blur-xs px-2.5 py-1 rounded text-[11px] font-mono text-slate-200 border border-slate-700/50">
+                14×14 Patch Grid (196 Tokens) • Jet Heatmap
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-3 min-h-[220px]">
-              <div className="rounded-xl overflow-hidden bg-slate-950 border border-slate-800 flex flex-col items-center justify-center p-2 relative">
-                <span className="absolute top-2 left-2 bg-slate-900/80 text-[10px] font-mono px-2 py-0.5 rounded text-slate-300">
-                  Cropped Face
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-h-[200px]">
+              <div className="rounded-lg overflow-hidden bg-slate-50 border border-slate-200 flex flex-col items-center justify-center p-3 relative">
+                <span className="absolute top-2 left-2 bg-white border border-slate-200 text-[11px] font-medium px-2 py-0.5 rounded text-slate-600 shadow-xs">
+                  Face Crop (1.3×)
                 </span>
-                <div className="w-full h-40 bg-slate-900 rounded flex items-center justify-center text-xs text-slate-500 font-mono">
-                  [1.3× Face Bounding Box]
+                <div className="w-full h-36 flex items-center justify-center text-xs text-slate-400 font-mono">
+                  Face Crop Region
                 </div>
               </div>
-              <div className="rounded-xl overflow-hidden bg-slate-950 border border-indigo-500/30 flex flex-col items-center justify-center p-2 relative">
-                <span className="absolute top-2 left-2 bg-indigo-900/80 text-[10px] font-mono px-2 py-0.5 rounded text-indigo-200">
-                  Attention Focus
+              <div className="rounded-lg overflow-hidden bg-slate-900 border border-slate-200 flex flex-col items-center justify-center p-3 relative">
+                <span className="absolute top-2 left-2 bg-blue-600 text-[11px] font-medium px-2 py-0.5 rounded text-white shadow-xs">
+                  Attention Map
                 </span>
                 <img
                   src={`data:image/png;base64,${face.attention_map}`}
                   alt="ViT Heatmap"
-                  className="max-h-40 w-auto object-contain rounded"
+                  className="max-h-36 w-auto object-contain rounded"
                 />
               </div>
             </div>
@@ -93,8 +93,8 @@ export const AttentionHeatmapViewer: React.FC<Props> = ({ face }) => {
 
           {/* Opacity slider */}
           {viewMode === 'heatmap' && (
-            <div className="flex items-center gap-3 px-1">
-              <span className="text-xs text-slate-400 font-mono">Overlay Opacity:</span>
+            <div className="flex items-center gap-3 px-1 pt-1">
+              <span className="text-xs font-medium text-slate-600">Overlay Opacity:</span>
               <input
                 type="range"
                 min="0.2"
@@ -102,23 +102,23 @@ export const AttentionHeatmapViewer: React.FC<Props> = ({ face }) => {
                 step="0.05"
                 value={opacity}
                 onChange={(e) => setOpacity(parseFloat(e.target.value))}
-                className="flex-1 accent-indigo-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
+                className="flex-1 accent-blue-600 h-1.5 bg-slate-200 rounded-lg cursor-pointer"
               />
-              <span className="text-xs font-mono text-slate-300 w-10 text-right">{Math.round(opacity * 100)}%</span>
+              <span className="text-xs font-mono text-slate-700 w-10 text-right">{Math.round(opacity * 100)}%</span>
             </div>
           )}
 
-          {/* Scientific Interpretation Note */}
-          <div className="p-3 rounded-lg bg-indigo-950/30 border border-indigo-800/40 text-xs text-indigo-300 flex items-start gap-2.5">
-            <Sparkles className="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5" />
+          {/* Forensic note */}
+          <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-600 flex items-start gap-2">
+            <Info className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
             <p className="leading-relaxed">
-              <strong className="text-white">What this heatmap means:</strong> Red and warm regions indicate high transformer token attention where the Vision Transformer detected key boundary or facial features. Cool blue regions had lower saliency.
+              <strong className="text-slate-900">Interpretation:</strong> Warm red/orange areas indicate tokens where the transformer encoder identified distinct boundary artifacts, facial asymmetry, or synthesis noise. Cool blue areas represent low anomaly weight.
             </p>
           </div>
         </div>
       ) : (
-        <div className="py-12 text-center text-slate-500 text-sm font-mono">
-          No attention map available for this face extraction.
+        <div className="py-12 text-center text-slate-400 text-sm">
+          No attention heatmap generated for this face crop.
         </div>
       )}
     </div>
