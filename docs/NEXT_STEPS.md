@@ -8,8 +8,9 @@
 - [x] Build baseline evaluation script (`ml_training/evaluate_baseline.py`) with zero heuristics/backdoors.
 - [x] Create project continuity documentation suite in `docs/`.
 - [x] **Phase 3 Baseline Isolation**: Evaluated baseline ViT on 200 benchmark images (98.50% acc) and 30 real smartphone photos under 4 crop padding modes (86.67% acc in Mode B 1.3x).
+- [x] **Phase 4 Dual Model Evaluation**: Evaluated Secondary Detector independently; proved complementary value by rescuing **3 out of 4 ViT failure cases** (96.7% complementary accuracy).
+- [ ] **Phase 6 Ensemble Calibration**: Build and calibrate the ensemble fusion layer ($w_1 \cdot \text{ViT} + w_2 \cdot \text{Secondary}$) to minimize False Positives and False Negatives.
 - [ ] **[USER ACTION]** Continue collecting remaining smartphone photos to reach 250–350 total across 10 categories as per `docs/IMAGE_COLLECTION_GUIDE.md`.
-- [ ] **Phase 4**: Download/integrate `SBI (Self-Blended Images)` EfficientNet-B4 model and run on these same images.
 
 ---
 

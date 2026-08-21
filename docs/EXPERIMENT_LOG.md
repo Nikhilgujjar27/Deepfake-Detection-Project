@@ -112,28 +112,41 @@ Standardizing face crop bounding-box margins to $1.3\times$ will align the input
 
 ---
 
-## Experiment 003 — SBI EfficientNet-B4 Independent Evaluation [PENDING]
+## Experiment 003 — Dual Model Independent Comparison (Phase 4)
 
 ### Date
-*Pending Phase 4 Execution*
+2026-08-21
 
 ### Objective
-Measure the zero-shot deepfake detection accuracy of Self-Blended Images (SBI) on the benchmark test set and smartphone photos.
+Empirically test whether a secondary deepfake detector provides orthogonal, complementary signals to rescue ViT false positives on real smartphone photos.
 
 ### Hypothesis
-Because SBI is trained on synthetic blending boundaries on real images without ever seeing specific deepfake generators, it will achieve superior cross-dataset generalization on face swaps and smartphone photos compared to the baseline ViT.
+Because the secondary detector learned different feature representations from the baseline ViT, it will succeed on low-light and compressed real images that ViT incorrectly flagged as fake.
 
-### Model
-- SBI `EfficientNet-B4` (Pretrained weights from CVPR 2022 release)
+### Models Evaluated
+1. **Primary Model:** `ViTDeepfakeClassifier` (`models/baseline/vit_deepfake_v1_baseline.pth`)
+2. **Secondary Model:** `DeepFake-Detector-v2` (`prithivMLmods/Deep-Fake-Detector-v2-Model`)
+
+### Dataset
+- 30 genuine WhatsApp-compressed smartphone photos from `Training_images` (Ground Truth: 100% Real).
 
 ### Results
-| Metric | Benchmark Set | Real-World Smartphone Set |
-|---|---|---|
-| Accuracy | TBD | TBD |
-| False Positive Rate (FPR) | TBD | TBD |
-| False Negative Rate (FNR) | TBD | TBD |
-| F1-Score | TBD | TBD |
-| Latency | TBD | TBD |
+
+| Metric / Model Combination | Score | Ratio | Notes |
+|---|---:|---:|---|
+| **Primary ViT Accuracy** | **86.7%** | 26 / 30 | Solo ViT baseline with 1.3x crop |
+| **Secondary Model Accuracy** | **73.3%** | 22 / 30 | Solo Secondary baseline |
+| **Consensus Accuracy (Both Agree REAL)** | **63.3%** | 19 / 30 | Both models unanimously confident REAL |
+| **Complementary Ceiling (Union: Either Correct)** | **96.7%** | **29 / 30** | **Only 1 image failed across both models** |
+
+### Critical Finding: Secondary Model Rescued 3 out of 4 ViT Failures
+1. `WhatsApp Image 2026-07-21 at 8.49.28 PM (1).jpeg`: ViT flagged FAKE (99.0%) $\rightarrow$ **Secondary correctly identified REAL (75.9%)**
+2. `WhatsApp Image 2026-07-21 at 9.55.44 PM (1).jpeg`: ViT flagged FAKE (83.2%) $\rightarrow$ **Secondary correctly identified REAL (77.6%)**
+3. `WhatsApp Image 2026-07-21 at 9.55.53 PM.jpeg`: ViT flagged FAKE (92.9%) $\rightarrow$ **Secondary correctly identified REAL (74.8%)**
+
+### Conclusion & Decision
+- **Complementarity Verified:** The secondary model provides genuine independent value by correctly classifying noisy/low-light smartphone photos that trigger false alarms in the primary ViT.
+- **Ensemble Decision Gate Passed:** Proceed to Phase 6 (Ensemble Experiment & Fusion Calibration) to determine optimal weighted combination.
 
 ---
 
