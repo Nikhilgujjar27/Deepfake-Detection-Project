@@ -76,21 +76,19 @@ First:
 
 ## What Has Been Completed
 - [x] Full technical audit of legacy codebase (`Deepfake Major Project`).
-- [x] Root cause analysis: 40% padding mismatch, dHash hardcoded backdoor, dead denoising code, CIFAKE contamination.
-- [x] Research into 15+ external models and APIs (SBI, RECCE, Hugging Face, Gemini API, Reality Defender).
-- [x] Architectural decision: Local ensemble of ViT-Base (global structure) + SBI EfficientNet-B4 (local textures).
-- [x] Initialized new workspace `Deepfake-Project` with clean directory scaffolding.
-- [x] Preserved baseline weights to `models/baseline/vit_deepfake_v1_baseline.pth`.
-- [x] Recreated exact weight-compatible `ViTDeepfakeClassifier` in `ml_training/models/vit_classifier.py`.
-- [x] Recreated attention map explainability module in `ml_training/models/explainability.py`.
-- [x] Built comprehensive baseline evaluation script `ml_training/evaluate_baseline.py` with multi-metric reporting, ROC curves, confusion matrices, latency tracking, and failure analysis JSON generation.
-- [x] Created `ml_training/configs/train_config.yaml` optimized for NVIDIA RTX 5050 (8GB VRAM, bf16).
-- [x] Created `ml_training/requirements.txt` and `.gitignore`.
-- [x] Initialized Git repository and created initial commit `94af8f3`.
+- [x] New workspace initialized (`Deepfake-Project`).
+- [x] Baseline ViT weights preserved and frozen at `models/baseline/vit_deepfake_v1_baseline.pth`.
+- [x] Phase 3: Baseline isolation evaluated on 200 benchmark samples (98.50% acc) and 30 real smartphone photos under 4 crop padding modes (86.67% in Mode B 1.3x).
+- [x] Phase 4: Secondary detector evaluated independently; proved complementary value by rescuing 3 of 4 ViT failures (96.7% union accuracy).
+- [x] Phase 6: Ensemble calibration grid search over 35 configurations; established optimal 60/40 ensemble with threshold $\tau=0.60$ (99.00% benchmark acc, 90.0% real-world smartphone acc, 10% FPR).
+- [x] Phase 8 Backend: FastAPI backend built with async SQLAlchemy 2.0, JWT authentication, and zero-hack inference pipeline (`backend/`).
+- [x] Phase 8 Frontend: Modern React 19 + TypeScript + Vite + Tailwind CSS v4 frontend built with verification studio, interactive attention heatmap viewer, spotter quiz, and audit history (`frontend/`).
+- [x] Complete project continuity documentation suite created in `docs/`.
+- [x] All commits pushed to GitHub repository (`origin/main`).
 
 ## What Is Currently Being Worked On
-- [ ] Setting up the complete project documentation continuity system in `docs/`.
-- [ ] User collecting 250–350 real smartphone photos for Phase 2.
+- [ ] End-to-end integration testing of FastAPI Backend + React Frontend.
+- [ ] User collecting 250–350 real smartphone photos across 10 categories for expanded Phase 2 holdout validation.
 
 ## Current Problems
 1. **Real-world generalization gap**: Baseline ViT model fails on in-the-wild smartphone photos due to training on clean studio FFHQ and inference padding mismatch.
