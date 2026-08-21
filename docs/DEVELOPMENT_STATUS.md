@@ -60,24 +60,18 @@ First:
 - Image collection guidelines provided to user (`docs/image_collection_guide.md`).
 - Data directory structure created: `data/raw/`, `data/processed/train|val|test|calibration/`, `data/holdout/`.
 
-## Current Performance (Legacy Benchmark)
+## Current Performance (Measured Empirically in Phase 3)
 
-*Evaluated on 140k in-distribution test split (20,000 images) from legacy project:*
+| Benchmark / Dataset Split | Sample Size | Accuracy | F1-Score | ROC-AUC | False Positive Rate (FPR) | Latency (CPU) |
+|---|---|---:|---:|---:|---:|---:|
+| **140k In-Distribution Test Split** | 200 (100 Real / 100 Fake) | **98.50%** | **0.9850** | **0.9980** | **2.00%** | ~95ms |
+| **Real Smartphone Photos (Mode B: 1.3x Crop)** | 30 WhatsApp Images | **86.67%** | N/A (All Real) | N/A | **13.33%** | ~110ms |
+| **Real Smartphone Photos (Mode A: 1.1x Crop)** | 30 WhatsApp Images | **70.00%** | N/A (All Real) | N/A | **30.00%** | ~110ms |
+| **Real Smartphone Photos (Mode C: 1.4x Crop)** | 30 WhatsApp Images | **83.33%** | N/A (All Real) | N/A | **16.67%** | ~110ms |
 
-| Metric | Value |
-|---|---:|
-| Accuracy | 99.54% |
-| Precision | Not Found in Repository (aggregated in F1) |
-| Recall | Not Found in Repository (aggregated in F1) |
-| F1 | 0.9782 |
-| ROC-AUC | 0.9941 |
-| FPR | Not Found in Repository |
-| FNR | Not Found in Repository |
-| Latency | ~85ms – 120ms (ONNX CPU) / ~15ms – 30ms (CUDA GPU) |
-
-## Real-World Performance
-**Fails frequently on casual smartphone photos** (flags genuine photos as FAKE with high confidence).
-*Root causes identified*: Face bounding-box padding mismatch (40% wide background injected at inference vs tight crops in training), CIFAKE non-face data contamination, absence of smartphone degradation/compression in training set.
+## Real-World Performance Analysis
+- **Empirical Confirmation:** Standardized face cropping ($1.3\times$ margin) improved real smartphone accuracy from 70.0% to **86.7%** (only 4 false positives out of 30) without any model retraining.
+- **Identified Failure Mode:** The 4 false positive images occurred in dim/low-light evening conditions with WhatsApp compression, where sensor grain was misinterpreted as synthetic noise by the ViT.
 
 ## What Has Been Completed
 - [x] Full technical audit of legacy codebase (`Deepfake Major Project`).

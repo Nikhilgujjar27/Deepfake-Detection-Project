@@ -22,12 +22,21 @@ class ViTDeepfakeClassifier(nn.Module):
         super(ViTDeepfakeClassifier, self).__init__()
 
         # Load pre-trained ViT with custom classification head
-        self.vit = ViTForImageClassification.from_pretrained(
-            model_name,
-            num_labels=num_labels,
-            ignore_mismatched_sizes=True,  # Required when replacing classification head
-            attn_implementation="eager"     # Required for output_attentions
-        )
+        try:
+            self.vit = ViTForImageClassification.from_pretrained(
+                model_name,
+                num_labels=num_labels,
+                ignore_mismatched_sizes=True,
+                attn_implementation="eager",
+                local_files_only=True
+            )
+        except Exception:
+            self.vit = ViTForImageClassification.from_pretrained(
+                model_name,
+                num_labels=num_labels,
+                ignore_mismatched_sizes=True,
+                attn_implementation="eager"
+            )
 
     def load_state_dict(self, state_dict, strict=True):
         """

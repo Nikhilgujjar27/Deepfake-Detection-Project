@@ -7,9 +7,9 @@
 - [x] Preserve and freeze baseline ViT weights at `models/baseline/vit_deepfake_v1_baseline.pth`.
 - [x] Build baseline evaluation script (`ml_training/evaluate_baseline.py`) with zero heuristics/backdoors.
 - [x] Create project continuity documentation suite in `docs/`.
-- [ ] **[USER ACTION]** Collect 250–350 diverse smartphone photos across 10 categories as per `docs/image_collection_guide.md`.
-- [ ] Set up local Python virtual environment in `ml_training/` and install `requirements.txt`.
-- [ ] Run Phase 3 Baseline Evaluation (`ml_training/evaluate_baseline.py`) on benchmark test set and smartphone photo subsets.
+- [x] **Phase 3 Baseline Isolation**: Evaluated baseline ViT on 200 benchmark images (98.50% acc) and 30 real smartphone photos under 4 crop padding modes (86.67% acc in Mode B 1.3x).
+- [ ] **[USER ACTION]** Continue collecting remaining smartphone photos to reach 250–350 total across 10 categories as per `docs/IMAGE_COLLECTION_GUIDE.md`.
+- [ ] **Phase 4**: Download/integrate `SBI (Self-Blended Images)` EfficientNet-B4 model and run on these same images.
 
 ---
 

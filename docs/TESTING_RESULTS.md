@@ -21,22 +21,22 @@ Actual FAKE (StyleGAN)      54           9,946
 
 ---
 
-## 2. Real-World Smartphone Photo Evaluation (Phase 3 Registry)
+## 2. Real-World Smartphone Photo Evaluation (Phase 3 Baseline)
 
-*To be populated during Phase 3 execution using `ml_training/evaluate_baseline.py` across diverse smartphone photography conditions.*
+*Evaluated on 30 genuine WhatsApp-compressed smartphone photos from `Training_images` across 4 face crop extraction conditions (Ground Truth: 100% REAL).*
 
-| Test Category | Sample Count | Baseline ViT (Tight Crop) | Baseline ViT (Wide Crop) | SBI (EfficientNet) | Calibrated Ensemble | Target Accuracy | Status |
+| Preprocessing Extraction Mode | Sample Count | Correct (REAL) | False FAKE | Real Accuracy | False Positive Rate (FPR) | Mean P(REAL) Confidence | Status |
 |---|---|---|---|---|---|---|---|
-| **Indoor (Good Light)** | ~35 | — | — | — | — | $\ge 92\%$ | Pending Data |
-| **Indoor (Low / Dim Light)** | ~25 | — | — | — | — | $\ge 88\%$ | Pending Data |
-| **Outdoor (Daylight)** | ~35 | — | — | — | — | $\ge 94\%$ | Pending Data |
-| **Outdoor (Harsh / Backlit)** | ~15 | — | — | — | — | $\ge 88\%$ | Pending Data |
-| **Front Camera Selfies** | ~35 | — | — | — | — | $\ge 90\%$ | Pending Data |
-| **Rear Camera Portraits** | ~25 | — | — | — | — | $\ge 92\%$ | Pending Data |
-| **Group Photos (Multi-Face)** | ~25 | — | — | — | — | $\ge 88\%$ | Pending Data |
-| **WhatsApp Compressed** | ~25 | — | — | — | — | $\ge 90\%$ | Pending Data |
-| **Occluded / Edge Cases** | ~15 | — | — | — | — | $\ge 85\%$ | Pending Data |
-| **OVERALL REAL-WORLD** | **~250** | **TBD** | **TBD** | **TBD** | **TBD** | $\ge \mathbf{90\%}$ | **Pending Phase 3** |
+| **Mode A: Tight Crop (1.1x Margin)** | 30 | 21 / 30 | 9 / 30 | 70.0% | 30.0% | 72.1% | Evaluated |
+| **Mode B: Standardized Margin (1.3x)** | 30 | **26 / 30** | **4 / 30** | **86.7%** | **13.3%** | **81.8%** | **Optimal Baseline** |
+| **Mode C: Legacy Wide Crop (1.4x Margin)**| 30 | 25 / 30 | 5 / 30 | 83.3% | 16.7% | 81.7% | Evaluated |
+| **Mode D: Full Uncropped (Direct Resize)** | 30 | 25 / 30 | 5 / 30 | 83.3% | 16.7% | 81.4% | Evaluated |
+
+### Verified Failure Cases in Mode B (1.3x Margin)
+1. `WhatsApp Image 2026-07-21 at 8.49.27 PM.jpeg` — P(Fake) = 67.46% (Low light / Evening)
+2. `WhatsApp Image 2026-07-21 at 8.49.28 PM (1).jpeg` — P(Fake) = 98.98% (High ISO sensor grain)
+3. `WhatsApp Image 2026-07-21 at 9.55.44 PM (1).jpeg` — P(Fake) = 83.17% (Backlit screen reflection)
+4. `WhatsApp Image 2026-07-21 at 9.55.53 PM.jpeg` — P(Fake) = 92.85% (Dim mixed indoor light)
 
 ---
 

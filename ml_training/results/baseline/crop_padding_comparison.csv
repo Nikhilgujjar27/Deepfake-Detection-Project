@@ -1,0 +1,5 @@
+Preprocessing Mode,Correct (REAL),False FAKE,Real Accuracy,False Positive Rate,Mean P(REAL)
+Mode A: Tight Face Crop (1.1x Margin - FFHQ Style),21/30,9/30,70.0%,30.0%,72.1%
+Mode B: Standardized Face Crop (1.3x Margin),26/30,4/30,86.7%,13.3%,81.8%
+Mode C: Legacy Wide Crop (1.4x Margin - Old Inference),25/30,5/30,83.3%,16.7%,81.7%
+Mode D: Full Uncropped Image (Direct Resize),25/30,5/30,83.3%,16.7%,81.4%
