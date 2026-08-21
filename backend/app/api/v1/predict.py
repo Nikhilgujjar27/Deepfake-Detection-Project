@@ -18,7 +18,7 @@ router = APIRouter(prefix="/predict", tags=["Prediction"])
 
 
 @router.post("/analyze", response_model=PredictionResponse)
-async def analyze_image(
+def analyze_image(
     file: UploadFile = File(...),
     current_user: Optional[User] = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -32,7 +32,7 @@ async def analyze_image(
         )
 
     # 2. Read bytes & validate size
-    image_bytes = await file.read()
+    image_bytes = file.file.read()
     max_bytes = settings.MAX_UPLOAD_SIZE_MB * 1024 * 1024
     if len(image_bytes) > max_bytes:
         raise HTTPException(

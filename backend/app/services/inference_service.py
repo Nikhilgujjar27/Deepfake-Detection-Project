@@ -228,21 +228,22 @@ class InferenceService:
         if face_results:
             if final_verdict == "FAKE":
                 fake_confs = [f["ensemble_p_fake"] for f in face_results if f["verdict"] == "FAKE"]
-                overall_confidence = round(np.mean(fake_confs) * 100, 2) if fake_confs else 50.0
+                overall_confidence = float(np.mean(fake_confs) * 100) if fake_confs else 50.0
             else:
                 real_confs = [1.0 - f["ensemble_p_fake"] for f in face_results if f["verdict"] == "REAL"]
-                overall_confidence = round(np.mean(real_confs) * 100, 2) if real_confs else 50.0
+                overall_confidence = float(np.mean(real_confs) * 100) if real_confs else 50.0
+            overall_confidence = round(overall_confidence, 2)
         else:
             overall_confidence = 0.0
 
-        processing_time_ms = int((time.time() - start_time) * 1000)
+        processing_time_ms = float((time.time() - start_time) * 1000)
 
         # 6. Return structured result
         return {
             "final_verdict": final_verdict,
-            "confidence": overall_confidence,
-            "faces_detected": faces_detected,
+            "confidence": float(overall_confidence),
+            "faces_detected": int(faces_detected),
             "faces": face_results,
             "metadata": metadata,
-            "processing_time_ms": processing_time_ms,
+            "processing_time_ms": float(processing_time_ms),
         }

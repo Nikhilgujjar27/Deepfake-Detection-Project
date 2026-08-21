@@ -2,25 +2,33 @@ from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 
+class BBox(BaseModel):
+    x1: int
+    y1: int
+    x2: int
+    y2: int
+
 class FaceResult(BaseModel):
-    index: int
-    bbox: Dict[str, float]
+    face_index: int
+    bbox: Dict[str, Any]
     vit_verdict: str
     vit_confidence: float
+    vit_p_fake: float
     secondary_verdict: str
     secondary_confidence: float
+    secondary_p_fake: float
     ensemble_p_fake: float
-    face_verdict: str
-    face_confidence: float
+    verdict: str
+    confidence: float
     attention_map: Optional[str] = None
 
 class PredictionResponse(BaseModel):
     final_verdict: str
-    confidence_score: float
+    confidence: float
     faces_detected: int
-    face_results: List[FaceResult]
-    processing_time_ms: float
+    faces: List[FaceResult]
     metadata: Dict[str, Any]
+    processing_time_ms: float
 
 class ScanHistoryResponse(BaseModel):
     id: int

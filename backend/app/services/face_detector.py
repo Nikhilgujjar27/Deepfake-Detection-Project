@@ -65,17 +65,17 @@ class FaceDetector:
                 pad_w = int(w * (self.padding - 1.0) / 2.0)
                 pad_h = int(h * (self.padding - 1.0) / 2.0)
                 
-                x1 = max(0, x - pad_w)
-                y1 = max(0, y - pad_h)
-                x2 = min(img_w, x + w + pad_w)
-                y2 = min(img_h, y + h + pad_h)
+                x1 = int(max(0, x - pad_w))
+                y1 = int(max(0, y - pad_h))
+                x2 = int(min(img_w, x + w + pad_w))
+                y2 = int(min(img_h, y + h + pad_h))
                 
                 crop = image.crop((x1, y1, x2, y2))
                 
                 result_faces.append({
-                    "index": idx,
+                    "index": int(idx),
                     "crop": crop,
-                    "bbox": {"x1": x1, "y1": y1, "x2": x2, "y2": y2}
+                    "bbox": {"x1": int(x1), "y1": int(y1), "x2": int(x2), "y2": int(y2)}
                 })
                 idx += 1
                 
