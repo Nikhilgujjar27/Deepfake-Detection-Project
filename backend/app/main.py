@@ -5,19 +5,20 @@ from app.core.config import settings
 from app.db.database import init_db
 from app.api.v1.auth import router as auth_router
 from app.api.v1.history import router as history_router
-from app.models.user import User  # ensures models are loaded for init_db
+from app.api.v1.predict import router as predict_router
+from app.models.user import User
 from app.models.scan import ScanHistory
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup
-    await init_db()
+    # Initialize Database Tables
+    init_db()
     yield
-    # Shutdown
 
 app = FastAPI(
     title=settings.APP_NAME,
     version='2.0.0',
+    description='DeepSentry — AI Facial Forensics & Deepfake Detection Engine',
     lifespan=lifespan
 )
 
@@ -31,13 +32,11 @@ app.add_middleware(
 
 app.include_router(auth_router, prefix="/api/v1")
 app.include_router(history_router, prefix="/api/v1")
-
-from app.api.v1.predict import router as predict_router
 app.include_router(predict_router, prefix="/api/v1")
 
 @app.get("/health", tags=["Health"])
 async def health_check():
-    return {"status": "ok"}
+    return {"status": "ok", "app": settings.APP_NAME, "version": "2.0.0"}
 
 @app.get("/", tags=["Root"])
 async def root():

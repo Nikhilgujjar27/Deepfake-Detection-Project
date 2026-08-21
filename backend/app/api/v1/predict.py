@@ -1,74 +1,80 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
-from pydantic import BaseModel
-from typing import Optional, List, Dict, Any
+import json
 import logging
+from typing import Optional
+from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
+from sqlalchemy.orm import Session
 
 from app.core.config import settings
+from app.db.database import get_db
+from app.models.user import User
+from app.models.scan import ScanHistory
+from app.schemas.prediction import PredictionResponse
 from app.services.inference_service import InferenceService
-
-# Mocking a dependency for current_user if it doesn't exist yet
-# Replace with actual get_current_user dependency if available
-def get_current_user_optional():
-    return None
+from app.core.security import get_current_user
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/predict", tags=["Prediction"])
 
-class BBox(BaseModel):
-    x1: int
-    y1: int
-    x2: int
-    y2: int
-
-class FaceResult(BaseModel):
-    face_index: int
-    bbox: BBox
-    vit_prob: float
-    sec_prob: float
-    ensemble_prob: float
-    verdict: str
-    attention_map: Optional[str]
-
-class PredictionResponse(BaseModel):
-    final_verdict: str
-    confidence: float
-    faces: List[FaceResult]
-    metadata: Dict[str, Any]
-    processing_time_ms: int
 
 @router.post("/analyze", response_model=PredictionResponse)
 async def analyze_image(
     file: UploadFile = File(...),
-    current_user = Depends(get_current_user_optional)
+    current_user: Optional[User] = Depends(get_current_user),
+    db: Session = Depends(get_db)
 ):
-    # Validate file type
-    allowed_types = ["image/jpeg", "image/png", "image/webp"]
-    if file.content_type not in allowed_types:
-        raise HTTPException(status_code=400, detail="Invalid file type. Only JPEG, PNG, and WEBP are supported.")
-        
-    # Read bytes
+    # 1. Validate file type
+    allowed_types = ["image/jpeg", "image/png", "image/webp", "image/jpg"]
+    if file.content_type and file.content_type not in allowed_types:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported file format '{file.content_type}'. Please upload JPEG, PNG, or WEBP."
+        )
+
+    # 2. Read bytes & validate size
     image_bytes = await file.read()
-    
-    # Validate file size
-    max_size_bytes = getattr(settings, 'MAX_UPLOAD_SIZE_MB', 10) * 1024 * 1024
-    if len(image_bytes) > max_size_bytes:
-        raise HTTPException(status_code=400, detail=f"File too large. Maximum size is {settings.MAX_UPLOAD_SIZE_MB} MB.")
-        
+    max_bytes = settings.MAX_UPLOAD_SIZE_MB * 1024 * 1024
+    if len(image_bytes) > max_bytes:
+        raise HTTPException(
+            status_code=400,
+            detail=f"File exceeds maximum allowed size of {settings.MAX_UPLOAD_SIZE_MB} MB."
+        )
+
+    # 3. Execute Calibrated Ensemble Inference
     try:
         service = InferenceService.get_instance()
         result = service.predict(image_bytes)
-        
-        # Save scan to database if user authenticated (Placeholder logic)
+
+        # 4. Save to ScanHistory if user is authenticated
         if current_user:
-            logger.info(f"Saving scan for user {current_user}")
-            # db.save_scan(user_id=current_user.id, result=result)
-            
-        return PredictionResponse(**result)
-        
-    except ValueError as e:
-        logger.error(f"Value error during prediction: {e}")
-        raise HTTPException(status_code=400, detail=str(e))
-    except Exception as e:
-        logger.exception("Internal error during prediction")
-        raise HTTPException(status_code=500, detail="Internal server error during analysis.")
+            try:
+                primary_face = result["faces"][0] if result["faces"] else {}
+                scan_record = ScanHistory(
+                    user_id=current_user.id,
+                    filename=file.filename or "upload.jpg",
+                    file_size_bytes=len(image_bytes),
+                    final_verdict=result["final_verdict"],
+                    confidence_score=result["confidence"],
+                    vit_verdict=primary_face.get("vit_verdict", "N/A"),
+                    vit_confidence=primary_face.get("vit_confidence", 0.0),
+                    secondary_verdict=primary_face.get("secondary_verdict", "N/A"),
+                    secondary_confidence=primary_face.get("secondary_confidence", 0.0),
+                    ensemble_p_fake=primary_face.get("ensemble_p_fake", 0.0),
+                    faces_detected=result["faces_detected"],
+                    face_results=json.dumps(result["faces"]),
+                    attention_map_b64=primary_face.get("attention_map"),
+                    processing_time_ms=result["processing_time_ms"]
+                )
+                db.add(scan_record)
+                db.commit()
+            except Exception as db_err:
+                logger.warning(f"Failed to persist scan record: {db_err}")
+
+        return result
+
+    except ValueError as val_err:
+        logger.error(f"Image processing value error: {val_err}")
+        raise HTTPException(status_code=400, detail=str(val_err))
+    except Exception as err:
+        logger.exception(f"Unexpected inference pipeline exception: {err}")
+        raise HTTPException(status_code=500, detail=f"Inference error: {str(err)}")

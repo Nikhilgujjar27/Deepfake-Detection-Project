@@ -1,21 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.models.user import User
 from app.schemas.user import UserCreate, UserLogin, UserResponse, Token
-from app.core.security import get_password_hash, verify_password, create_access_token, get_current_user
+from app.core.security import get_password_hash, verify_password, create_access_token, require_current_user
 
 router = APIRouter(prefix='/auth', tags=['Authentication'])
 
 @router.post('/register', response_model=Token)
-async def register(user_in: UserCreate, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(User).where(User.email == user_in.email))
-    if result.scalars().first():
+def register(user_in: UserCreate, db: Session = Depends(get_db)):
+    if db.query(User).filter(User.email == user_in.email).first():
         raise HTTPException(status_code=400, detail="Email already registered")
         
-    result = await db.execute(select(User).where(User.username == user_in.username))
-    if result.scalars().first():
+    if db.query(User).filter(User.username == user_in.username).first():
         raise HTTPException(status_code=400, detail="Username already registered")
         
     hashed_password = get_password_hash(user_in.password)
@@ -25,16 +22,15 @@ async def register(user_in: UserCreate, db: AsyncSession = Depends(get_db)):
         hashed_password=hashed_password
     )
     db.add(db_user)
-    await db.commit()
-    await db.refresh(db_user)
+    db.commit()
+    db.refresh(db_user)
     
     access_token = create_access_token(data={"sub": db_user.email})
     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.post('/login', response_model=Token)
-async def login(user_in: UserLogin, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(User).where(User.email == user_in.email))
-    db_user = result.scalars().first()
+def login(user_in: UserLogin, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.email == user_in.email).first()
     
     if not db_user or not verify_password(user_in.password, db_user.hashed_password):
         raise HTTPException(
@@ -47,5 +43,5 @@ async def login(user_in: UserLogin, db: AsyncSession = Depends(get_db)):
     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.get('/me', response_model=UserResponse)
-async def get_me(current_user: User = Depends(get_current_user)):
+def get_me(current_user: User = Depends(require_current_user)):
     return current_user

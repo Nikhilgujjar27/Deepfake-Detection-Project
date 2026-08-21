@@ -1,11 +1,15 @@
 import os
-from pydantic_settings import BaseSettings
+from dotenv import load_dotenv
 
-class Settings(BaseSettings):
-    APP_NAME: str = 'DeepSentry'
-    SECRET_KEY: str = 'development_secret_key_12345'
-    ALGORITHM: str = 'HS256'
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
+load_dotenv()
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+class Settings:
+    APP_NAME: str = os.getenv("APP_NAME", "DeepSentry")
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "development_secret_key_12345")
+    ALGORITHM: str = os.getenv("ALGORITHM", "HS256")
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "1440"))
     ALLOWED_ORIGINS: list[str] = [
         "http://localhost:5173",
         "http://localhost:3000",
@@ -15,19 +19,19 @@ class Settings(BaseSettings):
         "http://127.0.0.1:8000"
     ]
     
-    BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-    MODEL_PATH: str = os.path.join(BASE_DIR, 'models', 'baseline', 'vit_deepfake_v1_baseline.pth')
-    SECONDARY_MODEL_ID: str = 'prithivMLmods/Deep-Fake-Detector-v2-Model'
-    DATABASE_URL: str = f"sqlite+aiosqlite:///{os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'deepfake_sentry.db')}"
+    BASE_DIR: str = BASE_DIR
+    MODEL_PATH: str = os.getenv("MODEL_PATH", os.path.join(BASE_DIR, "models", "baseline", "vit_deepfake_v1_baseline.pth"))
+    SECONDARY_MODEL_ID: str = os.getenv("SECONDARY_MODEL_ID", "prithivMLmods/Deep-Fake-Detector-v2-Model")
     
-    ENSEMBLE_WEIGHT_VIT: float = 0.60
-    ENSEMBLE_WEIGHT_SECONDARY: float = 0.40
-    ENSEMBLE_THRESHOLD: float = 0.60
-    FACE_CROP_PADDING: float = 1.3
-    MAX_UPLOAD_SIZE_MB: int = 10
-
-    model_config = {
-        "env_file": ".env"
-    }
+    # SQLite Database absolute path
+    db_path = os.path.join(BASE_DIR, "deepfake_sentry.db").replace("\\", "/")
+    DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{db_path}")
+    
+    # Calibrated Ensemble Hyperparameters (Phase 6 Empirical Optima)
+    ENSEMBLE_WEIGHT_VIT: float = float(os.getenv("ENSEMBLE_WEIGHT_VIT", "0.60"))
+    ENSEMBLE_WEIGHT_SECONDARY: float = float(os.getenv("ENSEMBLE_WEIGHT_SECONDARY", "0.40"))
+    ENSEMBLE_THRESHOLD: float = float(os.getenv("ENSEMBLE_THRESHOLD", "0.60"))
+    FACE_CROP_PADDING: float = float(os.getenv("FACE_CROP_PADDING", "1.3"))
+    MAX_UPLOAD_SIZE_MB: int = int(os.getenv("MAX_UPLOAD_SIZE_MB", "10"))
 
 settings = Settings()

@@ -4,14 +4,14 @@ from jose import jwt, JWTError
 from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.orm import Session
+
 from app.core.config import settings
 from app.db.database import get_db
 from app.models.user import User
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login", auto_error=False)
 
 def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
@@ -36,22 +36,25 @@ def verify_token(token: str) -> Optional[Dict[str, Any]]:
     except JWTError:
         return None
 
-async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_db)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+def get_current_user(token: Optional[str] = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> Optional[User]:
+    if not token:
+        return None
     payload = verify_token(token)
     if payload is None:
-        raise credentials_exception
+        return None
         
     email: str = payload.get("sub")
     if email is None:
-        raise credentials_exception
+        return None
         
-    result = await db.execute(select(User).where(User.email == email))
-    user = result.scalars().first()
-    if user is None:
-        raise credentials_exception
+    user = db.query(User).filter(User.email == email).first()
     return user
+
+def require_current_user(current_user: Optional[User] = Depends(get_current_user)) -> User:
+    if current_user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication required",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return current_user
