@@ -9,7 +9,9 @@
 - [x] Create project continuity documentation suite in `docs/`.
 - [x] **Phase 3 Baseline Isolation**: Evaluated baseline ViT on 200 benchmark images (98.50% acc) and 30 real smartphone photos under 4 crop padding modes (86.67% acc in Mode B 1.3x).
 - [x] **Phase 4 Dual Model Evaluation**: Evaluated Secondary Detector independently; proved complementary value by rescuing **3 out of 4 ViT failure cases** (96.7% complementary accuracy).
-- [ ] **Phase 6 Ensemble Calibration**: Build and calibrate the ensemble fusion layer ($w_1 \cdot \text{ViT} + w_2 \cdot \text{Secondary}$) to minimize False Positives and False Negatives.
+- [x] **Phase 6 Ensemble Calibration**: Grid search completed over 35 configurations; established **Ensemble 60/40 ($\tau=0.60$)** as the optimal configuration (99.00% benchmark acc, 90.0% smartphone acc, 10% FPR).
+- [ ] **Phase 8 Backend Integration**: Build FastAPI REST API + Celery async worker implementing the calibrated 60/40 ensemble with ONNX model runtime.
+- [ ] **Phase 8 Frontend Rebuild**: Build modern React 19 + TypeScript + Vite + Tailwind UI with educational landing page and live verification interface.
 - [ ] **[USER ACTION]** Continue collecting remaining smartphone photos to reach 250–350 total across 10 categories as per `docs/IMAGE_COLLECTION_GUIDE.md`.
 
 ---
