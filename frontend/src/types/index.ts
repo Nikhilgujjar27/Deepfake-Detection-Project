@@ -8,14 +8,14 @@ export interface BBox {
 export interface FaceResult {
   face_index: number;
   bbox: BBox;
-  vit_verdict: 'REAL' | 'FAKE';
+  vit_verdict: 'REAL' | 'FAKE' | string;
   vit_confidence: number;
   vit_p_fake: number;
-  secondary_verdict: 'REAL' | 'FAKE';
+  secondary_verdict: 'REAL' | 'FAKE' | string;
   secondary_confidence: number;
   secondary_p_fake: number;
   ensemble_p_fake: number;
-  verdict: 'REAL' | 'FAKE';
+  verdict: 'REAL' | 'FAKE' | string;
   confidence: number;
   attention_map?: string | null;
 }
@@ -31,7 +31,7 @@ export interface ExifMetadata {
 }
 
 export interface PredictionResponse {
-  final_verdict: 'REAL' | 'FAKE' | 'ERROR';
+  final_verdict: 'REAL' | 'FAKE' | 'ERROR' | string;
   confidence: number;
   faces_detected: number;
   faces: FaceResult[];
@@ -49,19 +49,20 @@ export interface User {
 
 export interface ScanHistoryItem {
   id: number;
+  user_id?: number | null;
   filename: string;
-  file_size_bytes: number;
+  file_size_bytes?: number;
   final_verdict: string;
   confidence_score: number;
-  vit_verdict: string;
-  vit_confidence: number;
-  secondary_verdict: string;
-  secondary_confidence: number;
-  ensemble_p_fake: number;
-  faces_detected: number;
-  face_results: string;
-  attention_map_b64?: string;
-  processing_time_ms: number;
+  vit_verdict?: string | null;
+  vit_confidence?: number | null;
+  secondary_verdict?: string | null;
+  secondary_confidence?: number | null;
+  ensemble_p_fake?: number | null;
+  faces_detected?: number;
+  face_results?: string | null;
+  attention_map_b64?: string | null;
+  processing_time_ms?: number;
   created_at: string;
 }
 

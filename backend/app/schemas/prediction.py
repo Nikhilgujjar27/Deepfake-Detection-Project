@@ -32,11 +32,20 @@ class PredictionResponse(BaseModel):
 
 class ScanHistoryResponse(BaseModel):
     id: int
+    user_id: Optional[int] = None
     filename: str
+    file_size_bytes: Optional[int] = 0
     final_verdict: str
     confidence_score: float
-    faces_detected: int
-    processing_time_ms: float
+    vit_verdict: Optional[str] = "N/A"
+    vit_confidence: Optional[float] = 0.0
+    secondary_verdict: Optional[str] = "N/A"
+    secondary_confidence: Optional[float] = 0.0
+    ensemble_p_fake: Optional[float] = 0.0
+    faces_detected: Optional[int] = 1
+    face_results: Optional[str] = None
+    attention_map_b64: Optional[str] = None
+    processing_time_ms: Optional[float] = 0.0
     created_at: datetime
     
     model_config = {
